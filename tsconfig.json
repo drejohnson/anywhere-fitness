@@ -1,5 +1,9 @@
 {
-  "include": ["src", "types"],
+  "include": [
+    "src",
+    "api",
+    "types"
+  ],
   "compilerOptions": {
     "module": "esnext",
     "target": "esnext",
