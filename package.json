@@ -12,11 +12,10 @@
     "tailwindcss",
     "faunadb",
     "graphql",
-    "netlify",
-    "netlify-identity",
+    "jamstack",
+    "serverless",
     "snowpack",
-    "rollup",
-    "ecommerce"
+    "rollup"
   ],
   "license": "MIT",
   "author": {
@@ -29,6 +28,7 @@
     "url": "https://github.com/drejohnson/svelte-shop-app"
   },
   "dependencies": {
+    "faunadb": "^4.0.0",
     "svelte": "^3.28.0",
     "svelte-navigator": "^3.1.3"
   },
