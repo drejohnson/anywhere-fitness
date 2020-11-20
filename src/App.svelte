@@ -1,70 +1,59 @@
-<script lang='typescript'>
-	import {onMount} from 'svelte';
-	let count: number = 0;
-	onMount(() => {
-	  const interval = setInterval(() => count++, 1000);
-	  return () => {
-		clearInterval(interval);
-	  };
-	});
-  </script>
-  
-  <style>
+<script lang="typescript">
+	import { Router, Link, Route, link } from "svelte-navigator";
+	import NavLink from "./components/NavLink.svelte";
+	import Home from "./routes/Home.svelte";
+	import About from "./routes/About.svelte";
+	import Tailwind from "./components/Tailwind.svelte";
+</script>
+
+<style lang="postcss">
+	:global(:root) {
+		--header-color: indianred;
+	}
 	:global(body) {
-	  margin: 0;
-	  font-family: Arial, Helvetica, sans-serif;
+		margin: 0;
+		font-family: Arial, Helvetica, sans-serif;
 	}
-	.App {
-	  text-align: center;
-	}
-	.App code {
-	  background: #0002;
-	  padding: 4px 8px;
-	  border-radius: 4px;
-	}
-	.App p {
-	  margin: 0.4rem;
-	}
-  
-	.App-header {
-	  background-color: #f9f6f6;
-	  color: #333;
-	  min-height: 100vh;
-	  display: flex;
-	  flex-direction: column;
-	  align-items: center;
-	  justify-content: center;
-	  font-size: calc(10px + 2vmin);
-	}
-	.App-link {
-	  color: #ff3e00;
-	}
-	.App-logo {
-	  height: 36vmin;
-	  pointer-events: none;
-	  margin-bottom: 3rem;
-	  animation: App-logo-spin infinite 1.6s ease-in-out alternate;
-	}
-	@keyframes App-logo-spin {
-	  from {
-		transform: scale(1);
-	  }
-	  to {
-		transform: scale(1.06);
-	  }
-	}
-  </style>
-  
-  <div class="App">
-	<header class="App-header">
-	  <img src="/logo.svg" class="App-logo" alt="logo" />
-	  <p>Edit <code>src/App.svelte</code> and save to reload.</p>
-	  <p>Page has been open for <code>{count}</code> seconds.</p>
-	  <p>
-		<a class="App-link" href="https://svelte.dev" target="_blank" rel="noopener noreferrer">
-		  Learn Svelte
+</style>
+
+<Tailwind />
+<Router>
+	<header
+		class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+		<a
+			href="/"
+			use:link
+			class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				stroke="currentColor"
+				stroke-linecap="round"
+				stroke-linejoin="round"
+				stroke-width="2"
+				class="w-10 h-10 text-white p-2 bg-indigo-500 rounded-full"
+				viewBox="0 0 24 24">
+				<path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+			</svg>
+			<span class="ml-3 text-xl">Svelte App</span>
 		</a>
-	  </p>
+
+		<nav
+			class="md:ml-auto flex flex-wrap items-center text-base justify-center">
+			<NavLink to="/" styles="ml-5 hover:text-gray-900">Home</NavLink>
+			<NavLink to="about" styles="ml-5 hover:text-gray-900">About</NavLink>
+		</nav>
 	</header>
-  </div>
-  
+	<main>
+		<Route path="/">
+			<Home />
+		</Route>
+		<Route path="/about">
+			<About />
+		</Route>
+		<Route>
+			<h3>Oops...</h3>
+			<p>No Route could be matched.</p>
+		</Route>
+	</main>
+</Router>
