@@ -23,11 +23,11 @@ export const request = async (query: string, variables?: unknown) => {
   }
 
   try {
-    const response = await fetch('https://phreshr-graphql.herokuapp.com/v1/graphql', {
+    const response = await fetch('https://your-endpoint.herokuapp.com/v1/graphql', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-hasura-admin-secret': '1AdZwyERu19Qk4L1TZF88vupTYunO23i',
+        'x-hasura-admin-secret': 'hasura secret',
       },
       body: JSON.stringify({
         query,
