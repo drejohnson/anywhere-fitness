@@ -1,16 +1,24 @@
 import { writable } from 'svelte/store'
 
-interface User {
+export enum Status {
+  AUTHENTICATING = "AUTHENTICATING",
+  AUTHENTICATED = "AUTHENTICATED",
+  NOT_AUTHENTICATED = "NOT_AUTHENTICATED",
+  HAS_ERRORS = "HAS_ERRORS"
+}
+
+export interface User {
+  _id: string
   firstName?: String
   lastName?: String
   email: String
   role: String
 }
 
-interface Auth {
-  status: String
+export interface Auth {
+  status: Status
   user?: User
   token?: String
 }
 
-export const authState = writable<Auth>({ status: 'loading' })
+export const auth = writable<Auth>({ status: Status.NOT_AUTHENTICATED })
