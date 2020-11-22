@@ -1,0 +1,85 @@
+enum UserRole {
+  INSTRUCTOR
+  CLIENT
+}
+
+enum Weekday {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+type User {
+  email: String! @unique
+  firstName: String
+  lastName: String
+  role: UserRole!
+  workouts: [Workout!] @relation
+}
+
+type AuthPayload @embedded {
+  token: String
+  user: User
+}
+
+type Workout {
+  name: String!
+  description: String!
+  type: String!
+  intensityLevel: String!
+  days: [Weekday!]
+  startTime: String!
+  endTime: String!
+  duration: Int!
+  requirements: String!
+  location: String!
+  size: Int!
+  price: Float!
+  arrivalDetails: String
+  shouldKnowDetails: String
+  instructor: User!
+  reservations: [User!] @relation
+}
+
+input CreateUserInput {
+  firstName: String
+  lastName: String
+  email: String!
+  password: String!
+  role: UserRole!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+input LogoutInput {
+  allTokens: Boolean
+}
+
+input ReserveWorkoutInput {
+  workoutID: String!
+}
+
+type ReturnStatus @embedded {
+  status: String!
+}
+
+type Query {
+  allWorkouts: [Workout!]!
+  allUsers(role: UserRole): [User!]
+}
+
+type Mutation {
+  createUser(input: CreateUserInput): User! @resolver(name: "create_user")
+  loginUser(input: LoginUserInput): AuthPayload! @resolver(name: "login_user")
+  logoutUser(data: LogoutInput): Boolean! @resolver(name: "logout_user")
+  reserveWorkout(input: ReserveWorkoutInput): Workout! @resolver(name: "reserve_workout")
+  cancelReservation(input: ReserveWorkoutInput): Workout! @resolver(name: "cancel_reservation")
+  cascadeDeleteReservation(input: ReserveWorkoutInput): ReturnStatus @resolver(name: "cascade_delete_workout")
+}
