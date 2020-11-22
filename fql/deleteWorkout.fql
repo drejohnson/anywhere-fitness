@@ -1,0 +1,50 @@
+Update(
+  Function("cascade_delete_workout"),
+  {
+    body: Query(
+      Lambda(
+        "workout_id",
+        Let(
+          {
+            workout_ref: Ref(Collection("Workout"), Var("workout_id")),
+            workout: Get(Var("workout_ref")),
+            reservations: Select(["data", "reservations"], Var("workout"), []),
+            instructors: Select(["data", "instructors"], Var("workout"), []),
+            removeRefFromInstructor: Map(
+              Var("instructors"),
+              Lambda(
+                "instructor_ref",
+                Let(
+                  {
+                    workouts: Select(["data", "workouts"], Get(Var("instructor_ref")), []),
+                    updated_workouts_for_instructor: Difference(Var("workouts"), [Var("workout_ref")])
+                  },
+                  Update(Var("instructor_ref"), {
+                    data: { workouts: Var("updated_workouts_for_instructor") },
+                  })
+                )
+              )
+            ),
+            removeRefFromClients: Map(
+              Var("reservations"),
+              Lambda(
+                "client_ref",
+                Let(
+                  {
+                    workouts: Select(["data", "workouts"], Get(Var("client_ref"))),
+                    updated_workouts_for_client: Difference(Var("workouts"), [Var("workout_ref")])
+                  },
+                  Update(Var("client_ref"), {
+                    data: { workouts: Var("updated_workouts_for_client") },
+                  })
+                )
+              )
+            ),
+            deleteCourse: Delete(Var("workout_ref")),
+          },
+          { status: "success" }
+        )
+      )
+    )
+  }
+)

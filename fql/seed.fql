@@ -1,0 +1,142 @@
+Map(
+  [
+    {
+      firstName: "Russell",
+      lastName: "Jones",
+      email: "odb@wutang.clan",
+      password: "password1234",
+      role: "CLIENT",
+    },
+    {
+      firstName: "Christy",
+      lastName: "Ashbe",
+      email: "cashbe0@wired.com",
+      password: "password1234",
+      role: "INSTRUCTOR",
+      workouts: [
+        {
+          name: "Summertime fine",
+          description: "These beaches ain't ready",
+          type: "Yoga",
+          days: [
+            "SATURDAY",
+            "SUNDAY"
+          ],
+          intensityLevel: "Intermediate",
+          startTime: "5:30",
+          endTime: "6:00",
+          duration: 30,
+          requirements: "None",
+          location: "The Park",
+          size: 10,
+          price: 15.00,
+          arrivalDetails: "Arrive 10 minutes early for stretching",
+          shouldKnowDetails: "We go hard!"
+        }
+      ]
+    },
+    {
+      firstName: "Jaimie",
+      lastName: "Govini",
+      email: "jgovini1@live.com",
+      password: "password1234",
+      role: "INSTRUCTOR",
+      workouts: [
+        {
+          name: "Ultimate Abs",
+          description: "Intense Core Ab workout",
+          type: "Abs",
+          days: [
+            "WEDNESDAY",
+            "FRIDAY"
+          ],
+          intensityLevel: "Intermediate",
+          startTime: "6:30",
+          endTime: "7:00",
+          duration: 30,
+          requirements: "None",
+          location: "Shanghai",
+          size: 15,
+          price: 25.00,
+          arrivalDetails: "Arrive 10 minutes early for stretching",
+          shouldKnowDetails: "We go hard!"
+        }
+      ]
+    },
+    {
+      firstName: "April",
+      lastName: "Sawyer",
+      email: "aprilS11@umail.co",
+      password: "password1234",
+      role: "INSTRUCTOR",
+      workouts: [
+        {
+          name: "Hiit'em Up",
+          description: "High Intensity Full Body Workout",
+          type: "Hiit",
+          days: [
+            "THURSDAY",
+            "FRIDAY"
+          ],
+          intensityLevel: "Intermediate",
+          startTime: "6:30",
+          endTime: "7:30",
+          duration: 30,
+          requirements: "None",
+          location: "London",
+          size: 12,
+          price: 25.00,
+          arrivalDetails: "Arrive 10 minutes early for stretching",
+          shouldKnowDetails: "We go hard!"
+        }
+      ]
+    }
+  ],
+  Lambda(
+    "data",
+    Let(
+      {
+        userRef: Select(
+          "ref",
+          Call(Function("create_user"), [
+            {
+              firstName: Select("firstName", Var("data")),
+              lastName: Select("lastName", Var("data")),
+              email: Select("email", Var("data")),
+              password: Select("password", Var("data")),
+              role: Select("role", Var("data"))
+            }
+          ])
+        ),
+        workouts: Map(
+          Select("workouts", Var("data"), []),
+          Lambda(
+            "workout",
+            Create(Collection("Workout"), {
+              data: {
+                name: Select("name", Var("workout")),
+                description: Select("description", Var("workout")),
+                type: Select("type", Var("workout")),
+                days: Select("days", Var("workout")),
+                intensityLevel: Select("intensityLevel", Var("workout")),
+                startTime: Select("startTime", Var("workout")),
+                endTime: Select("endTime", Var("workout")),
+                duration: Select("duration", Var("workout")),
+                requirements: Select("requirements", Var("workout")),
+                location: Select("location", Var("workout")),
+                size: Select("size", Var("workout")),
+                price: Select("price", Var("workout")),
+                arrivalDetails: Select("arrivalDetails", Var("workout")),
+                shouldKnowDetails: Select("shouldKnowDetails", Var("workout")),
+                instructor: Var("userRef")
+              }
+            })
+          )
+        )
+      },
+      {
+        result: "Success"
+      }
+    )
+  )
+)

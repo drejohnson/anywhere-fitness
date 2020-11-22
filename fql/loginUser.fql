@@ -1,0 +1,18 @@
+Update(Function("login_user"), {
+  "body": Query(
+    Lambda(["input"],
+      Let(
+        {
+          response: Login(
+            Match(Index("user_by_email"), Select("email", Var("input"))),
+            { password: Select("password", Var("input")) },
+          )
+        },
+        {
+          token: Select("secret", Var("response")),
+          user: Select("instance", Var("response"))
+        }
+      )
+    )
+  )
+});

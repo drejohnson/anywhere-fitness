@@ -1,0 +1,33 @@
+Update(
+  Function("cancel_reservation"),
+  {
+    "body": Query(
+      Lambda(
+        "workout_id",
+        Let(
+          {
+            workoutRef: Ref(Collection("Workout"), Var("workout_id")),
+            workouts: Select(["data", "workouts"], Get(Identity()), []),
+            reservations: Select(
+              ["data", "reservations"],
+              Get(Var("workoutRef")),
+              []
+            ),
+            updatedWorkoutArray: Difference(Var("workouts"), [Var("workoutRef")]),
+            updatedReservationsArray: Difference(Var("reservations"), [
+              Identity(),
+            ]),
+          },
+          Do([
+            Update(Identity(), {
+              data: { workouts: Var("updatedWorkoutArray") },
+            }),
+            Update(Var("workoutRef"), {
+              data: { reservations: Var("updatedReservationsArray") },
+            }),
+          ])
+        )
+      )
+    ),
+  }
+);

@@ -1,0 +1,45 @@
+Update(
+  Function("reserve_workout"),
+  {
+    "body": Query(
+      Lambda(
+        "workout_id",
+        Let(
+          {
+            workoutRef: Ref(Collection("Workout"), Var("workout_id")),
+            reservedWorkouts: Select(["data", "workouts"], Get(Identity()), []),
+            reservableWorkout: Difference(
+              [Var("workoutRef")], 
+              Var("reservedWorkouts")
+            ),
+            updatedWorkoutArray: Append(Var("reservedWorkouts"), Var("reservableWorkout")),
+            updateOperations: Do(
+              Update(Identity(), {
+                data: { workouts: Var("updatedWorkoutArray") }
+              }),
+              Map(
+                Var("reservableWorkout"),
+                Lambda("ref", Let(
+                  {
+                    reservations: Select(
+                      ['data', 'reservations'], 
+                      Get(Var("ref"))
+                    ),
+                    updatedReservations: Append(
+                      Var('reservations'), 
+                      [Identity()]
+                    )
+                  },
+                  Update(Var('ref'), {
+                    data: { reservations: Var("updatedReservations") }
+                  })
+                ))
+              )
+            )
+          },
+          Map(Var("reservableWorkout"), Lambda("ref", Get(Var("ref"))))
+        )
+      )
+    )
+  }
+)

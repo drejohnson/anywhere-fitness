@@ -1,0 +1,33 @@
+Let(
+  {
+    prevPrivileges: Select(["privileges"], Get(Role("client"))),
+    newPrivileges: [
+      {
+        resource: Function("reserve_workout"),
+        actions: { call: true },
+      },
+      {
+        resource: Function("cancel_reservation"),
+        actions: { call: true },
+      },
+    ],
+  },
+   Update(Role("client"), {
+      privileges: Append(Var("prevPrivileges"), Var("newPrivileges")),
+    }),
+);
+
+Let(
+  {
+    prevPrivileges: Select(["privileges"], Get(Role("instructor"))),
+    newPrivileges: [
+      {
+        resource: Function("cascade_delete_workout"),
+        actions: { call: true },
+      },
+    ],
+  },
+   Update(Role("instructor"), {
+      privileges: Append(Var("prevPrivileges"), Var("newPrivileges")),
+    }),
+);

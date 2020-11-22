@@ -1,0 +1,78 @@
+CreateRole({
+  name: "client",
+  membership: {
+    resource: Collection("User"),
+    predicate: Query( 
+      Lambda("userRef",
+        // User attribute based rule:
+        // It grants access only if the User has CLIENT role.
+        // If so, further rules specified in the privileges
+        // section are applied next.        
+        Equals(Select(["data", "role"], Get(Var("userRef"))), "CLIENT")
+      )
+    )
+  },
+  privileges: [
+    {
+      // Note: 'allWorkouts' Index is used to retrieve the 
+      // documents from the Class collection. Therefore, 
+      // read access to the Index is required here as well.
+      resource: Index("allWorkouts"),
+      actions: { read: true } 
+    },
+    {
+      resource: Collection("Workout"),
+      actions: { read: true, write: true },
+    },
+    {
+      resource: Collection("User"),
+      actions: { 
+        read: true,  
+        write: true,
+        delete: true,
+      },
+    },
+  ]
+})
+
+CreateRole({
+  name: "instructor",
+  membership: {
+    resource: Collection("User"),
+    predicate: Query( 
+      Lambda("userRef",
+        // User attribute based rule:
+        // It grants access only if the User has INSTRUCTOR role.
+        // If so, further rules specified in the privileges
+        // section are applied next.        
+        Equals(Select(["data", "role"], Get(Var("userRef"))), "INSTRUCTOR")
+      )
+    )
+  },
+  privileges: [
+    {
+      // Note: 'allWorkouts' Index is used to retrieve the 
+      // documents from the Class collection. Therefore, 
+      // read access to the Index is required here as well.
+      resource: Index("allWorkouts"),
+      actions: { read: true } 
+    },
+    {
+      resource: Collection("Workout"),
+      actions: { 
+        read: true, 
+        write: true,
+        create: true, 
+        delete: true,  
+      },
+    },
+    {
+      resource: Collection("User"),
+      actions: { 
+        read: true,
+        write: true,
+        delete: true, 
+      },
+    },
+  ]
+})
