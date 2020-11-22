@@ -1,4 +1,5 @@
 <style global lang="postcss">
+  @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins&display=swap");
   @import "tailwindcss/base";
   @import "tailwindcss/components";
   @import "tailwindcss/utilities";
