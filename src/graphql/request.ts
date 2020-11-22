@@ -1,9 +1,17 @@
+import { get } from 'svelte/store'
+import { auth } from '../stores/auth'
+
 interface ResultArgs {
   fetchError?: unknown 
   httpError?: unknown 
   graphQLErrors?: unknown[]
   data?: unknown
 }
+
+const { 
+  SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT, 
+  SNOWPACK_PUBLIC_FAUNADB_SECRET 
+} = import.meta.env;
 
 export const request = async (query: string, variables?: unknown) => {
   const handleResult = ({ fetchError, httpError, graphQLErrors, data }: ResultArgs) => {
@@ -23,11 +31,12 @@ export const request = async (query: string, variables?: unknown) => {
   }
 
   try {
-    const response = await fetch('https://your-endpoint.herokuapp.com/v1/graphql', {
+    const token = get(auth).token || SNOWPACK_PUBLIC_FAUNADB_SECRET
+    console.log(get(auth).token)
+    const response = await fetch(SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'x-hasura-admin-secret': 'hasura secret',
+        authorization: token ? `Bearer ${token}` : "",
       },
       body: JSON.stringify({
         query,
@@ -59,6 +68,6 @@ export const request = async (query: string, variables?: unknown) => {
   }
 }
 
-export const gql = (strings: string[]) => {
+export const gql = (strings: TemplateStringsArray) => {
   return strings.join("");
 };
