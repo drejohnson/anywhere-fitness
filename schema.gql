@@ -13,11 +13,34 @@ enum Weekday {
   SUNDAY
 }
 
+enum Gender {
+  MALE
+  FEMALE
+  X
+}
+
+enum FitnessLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
 type User {
   email: String! @unique
   firstName: String
   lastName: String
   role: UserRole!
+  about: String
+  age: Int
+  gender: Gender
+  weight: Float
+  height: String
+  beforePic: String
+  afterPic: String
+  goal: String
+  location: String
+  fitnessLevel: FitnessLevel
+  instagramProfile: String
   workouts: [Workout!] @relation
 }
 
