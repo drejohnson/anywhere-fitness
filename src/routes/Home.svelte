@@ -77,7 +77,7 @@
         <div class="flex flex-col justify-center items-center my-10 mx-24">
           <h2 class="font-display text-4xl">Choose Your Own Adventure</h2>
           <p class="mb-6">
-            Yoga in a forest? Calisthenics on the beach? With Anytime Fitness,
+            Yoga in a forest? Calisthenics on the beach? With Anywhere Fitness,
             the posibilities are endless. Use our app to easily find and sign up
             for the fitness classes you're interested in anywhere in the world.
           </p>
