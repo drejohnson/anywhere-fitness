@@ -47,6 +47,7 @@ type User {
 type AuthPayload @embedded {
   token: String
   user: User
+  error: ErrorStatus
 }
 
 type Workout {
@@ -89,7 +90,12 @@ input ReserveWorkoutInput {
   workoutID: String!
 }
 
-type ReturnStatus @embedded {
+type ErrorStatus @embedded {
+  status: String
+  message: String
+}
+
+type StatusResult @embedded {
   status: String!
 }
 
@@ -99,10 +105,10 @@ type Query {
 }
 
 type Mutation {
-  createUser(input: CreateUserInput): User! @resolver(name: "create_user")
+  createUser(input: CreateUserInput): AuthPayload! @resolver(name: "create_user")
   loginUser(input: LoginUserInput): AuthPayload! @resolver(name: "login_user")
   logoutUser(data: LogoutInput): Boolean! @resolver(name: "logout_user")
   reserveWorkout(input: ReserveWorkoutInput): Workout! @resolver(name: "reserve_workout")
   cancelReservation(input: ReserveWorkoutInput): Workout! @resolver(name: "cancel_reservation")
-  cascadeDeleteReservation(input: ReserveWorkoutInput): ReturnStatus @resolver(name: "cascade_delete_workout")
+  cascadeDeleteReservation(input: ReserveWorkoutInput): StatusResult @resolver(name: "cascade_delete_workout")
 }
