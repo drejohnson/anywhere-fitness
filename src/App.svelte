@@ -7,7 +7,7 @@
 	import Header from "./components/Header.svelte";
 	import Home from "./routes/Home.svelte";
 	import About from "./routes/About.svelte";
-	import Browse from "./routes/Browse.svelte";
+	import Explore from "./routes/Explore.svelte";
 	import Profile from "./routes/Profile.svelte";
 	import Signin from "./routes/Signin.svelte";
 	import Signup from "./routes/Signup.svelte";
@@ -49,7 +49,7 @@
 				<Home />
 			</Route>
 			<Route path="/browse">
-				<Browse />
+				<Explore />
 			</Route>
 			<Route path="/about">
 				<About />

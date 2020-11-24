@@ -4,4 +4,4 @@
 <style>
 </style>
 
-<h1>Browse Classes</h1>
+<h1>Explore Classed</h1>
