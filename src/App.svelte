@@ -8,7 +8,6 @@
 	import Home from "./routes/Home.svelte";
 	import About from "./routes/About.svelte";
 	import Browse from "./routes/Browse.svelte";
-	import Login from "./routes/Login.svelte";
 	import Profile from "./routes/Profile.svelte";
 	import Signin from "./routes/Signin.svelte";
 	import Signup from "./routes/Signup.svelte";
