@@ -1,30 +1,35 @@
 import type { Auth, User } from "./stores/auth";
 
+export type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
+
+export type JsonString = { [key: string]: string };
+export type JsonBool = { [key: string]: boolean };
+
 export interface SignupPayload {
   createUser: {
     user: User;
-    token: String;
+    token: string;
     error?: {
-      status: String;
-      message: String;
+      status: string;
+      message: string;
     };
   };
 }
 
 export interface AuthInputs {
-  email: String;
-  password: String;
+  email: string;
+  password: string;
 }
 
 export interface SignupInputs extends AuthInputs {
-  firstName: String;
-  lastName: String;
-  role: String;
+  firstName: string;
+  lastName: string;
+  role: string;
 }
 
 export interface LoginPayload {
   loginUser: {
     user: User;
-    token: String;
+    token: string;
   };
 }

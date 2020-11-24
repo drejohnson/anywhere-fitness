@@ -5,7 +5,7 @@
   import type { User } from "../stores/auth";
   import { auth, Status } from "../stores/auth";
 
-  export let role: String;
+  export let role: string;
 
   const signup_query = `
     mutation SignupClientUser(
@@ -58,10 +58,10 @@
 
       if (result.error) console.error("Oh no!", result.error);
 
-      let token = result?.data?.createUser.token as string;
-      let user = result?.data?.createUser.user as User;
-      let userExistError = result?.data?.createUser.error;
-      let graphqlError = result?.error;
+      let token = result.data?.createUser.token as string;
+      let user = result.data?.createUser.user as User;
+      let userExistError = result.data?.createUser.error;
+      let graphqlError = result.error;
 
       if (userExistError?.status === "UserExists")
         console.log("userExistError message", userExistError?.status);

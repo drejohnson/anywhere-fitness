@@ -9,16 +9,16 @@ export enum Status {
 
 export interface User {
   _id: string
-  firstName?: String
-  lastName?: String
-  email: String
-  role: String
+  firstName?: string
+  lastName?: string
+  email: string
+  role: string
 }
 
 export interface Auth {
   status: Status
   user?: User
-  token?: String
+  token?: string
 }
 
 export const auth = writable<Auth>({ status: Status.NOT_AUTHENTICATED })

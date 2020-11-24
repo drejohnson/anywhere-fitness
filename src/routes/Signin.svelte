@@ -8,7 +8,7 @@
   interface Data {
     loginUser: {
       user: User;
-      token: String;
+      token: string;
     };
   }
 
@@ -41,12 +41,13 @@
       });
 
       if (result.error) console.error("Oh no!", result.error);
-
-      let token = result?.data?.loginUser.token as string;
-      let user = result?.data?.loginUser.user as User;
+      if (result.data) console.error("Data", result.error);
+      let token = result.data?.loginUser.token as string;
+      let user = result.data?.loginUser.user as User;
 
       auth.set({ status: Status.AUTHENTICATED, token, user });
       input = { email: "", password: "" };
+      navigate("/user/profile", { replace: true });
     } catch (error) {
       console.log(error.response.data.message);
       auth.set({ status: Status.NOT_AUTHENTICATED });
