@@ -1,5 +1,8 @@
 <script lang="typescript">
+	import { get } from "svelte/store";
+	import { createClient, setClient } from "@urql/svelte";
 	import { Router, Route } from "svelte-navigator";
+	import { auth } from "./stores/auth";
 	import Tailwind from "./components/Tailwind.svelte";
 	import Header from "./components/Header.svelte";
 	import Home from "./routes/Home.svelte";
@@ -8,6 +11,24 @@
 	import Login from "./routes/Login.svelte";
 	import Profile from "./routes/Profile.svelte";
 	import Signin from "./routes/Signin.svelte";
+	import Signup from "./routes/Signup.svelte";
+
+	const {
+		SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT,
+		SNOWPACK_PUBLIC_FAUNADB_SECRET,
+	} = import.meta.env;
+
+	const client = createClient({
+		url: SNOWPACK_PUBLIC_GRAPHQL_ENDPOINT,
+		fetchOptions: () => {
+			const token = get(auth).token || SNOWPACK_PUBLIC_FAUNADB_SECRET;
+			return {
+				headers: { authorization: token ? `Bearer ${token}` : "" },
+			};
+		},
+	});
+
+	setClient(client);
 </script>
 
 <style lang="postcss">
