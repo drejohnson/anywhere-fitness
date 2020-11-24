@@ -59,6 +59,9 @@
 				<Route path="/login">
 					<Signin />
 				</Route>
+				<Route path="/signup">
+					<Signup role="CLIENT" />
+				</Route>
 			</Route>
 
 			<Route path="/user/*">
