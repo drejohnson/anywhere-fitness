@@ -68,6 +68,10 @@ export const request = async (query: string, variables?: unknown) => {
   }
 }
 
-export const gql = (strings: TemplateStringsArray) => {
-  return strings.join("");
+export const gql = (strings: TemplateStringsArray, ...expr: string[]) => {
+  let str = '';
+  strings.forEach((string, i) => {
+      str += string + (expr[i] || '');
+  });
+  return str;
 };
