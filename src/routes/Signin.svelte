@@ -1,7 +1,8 @@
 <script lang="typescript">
   import { navigate } from "svelte-navigator";
-  import { request, gql } from "../graphql/request";
-  import type { Auth, User } from "../stores/auth";
+  import { operationStore, mutation } from "@urql/svelte";
+  import type { LoginPayload, AuthInputs } from "../types";
+  import type { User } from "../stores/auth";
   import { auth, Status } from "../stores/auth";
 
   interface Data {
@@ -11,7 +12,7 @@
     };
   }
 
-  const query = gql`
+  const login_query = `
     mutation loginUser($email: String!, $password: String!) {
       loginUser(input: { email: $email, password: $password }) {
         token
@@ -27,33 +28,27 @@
   `;
 
   let input = { email: "", password: "" };
-  let error: any = null;
 
-  let submit = async () => {
+  const loginUserStore = operationStore<LoginPayload, AuthInputs>(login_query);
+  const loginUserMutation = mutation(loginUserStore);
+
+  let onSubmit = async () => {
+    auth.set({ status: Status.AUTHENTICATING });
     try {
-      auth.set({ status: Status.AUTHENTICATING });
-      console.log("send a request to login the user");
-      error = null;
-      let result = await request(query, {
+      let result = await loginUserMutation({
         email: input.email,
         password: input.password,
       });
-      console.log("result", result);
-      if (result?.error) {
-        auth.set({ status: Status.HAS_ERRORS });
-        let errorMessages = result?.graphQLErrors;
-        error = errorMessages && errorMessages[0];
-      } else {
-        let data = result && (result.data as Data);
-        let token = data?.loginUser?.token as string;
-        let user = data?.loginUser?.user as User;
 
-        auth.set({ status: Status.AUTHENTICATED, token, user });
-        input = { email: "", password: "" };
-        navigate("/user/profile", { replace: true });
-      }
-    } catch (err) {
-      error = err.response.data.message;
+      if (result.error) console.error("Oh no!", result.error);
+
+      let token = result?.data?.loginUser.token as string;
+      let user = result?.data?.loginUser.user as User;
+
+      auth.set({ status: Status.AUTHENTICATED, token, user });
+      input = { email: "", password: "" };
+    } catch (error) {
+      console.log(error.response.data.message);
       auth.set({ status: Status.NOT_AUTHENTICATED });
     }
   };
@@ -78,7 +73,6 @@
 <div class="lg:flex">
   <div class="w-full">
     <section class="bg-image">
-      <span />
       <div class="grid grid-cols-2 content-center h-full">
         <div
           class="flex flex-col justify-center items-center my-10 mx-24  z-10">
@@ -98,9 +92,9 @@
           <div class="mt-8">
             {#if $auth.status === Status.HAS_ERRORS}
               <p>Oops something went wrong!</p>
-              <p>{error}</p>
+              <p>{$loginUserStore.error?.message}</p>
             {/if}
-            <form action="" on:submit|preventDefault={submit}>
+            <form action="" on:submit|preventDefault={onSubmit}>
               <div class="input-goup">
                 <label
                   class="text-sm font-bold text-white tracking-wide"
