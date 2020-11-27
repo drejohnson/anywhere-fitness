@@ -51,7 +51,7 @@
           on:click={() => navigate('browse')}>Browse Classes</button>
       </div>
     </section>
-    <section class="container">
+    <section class="w-full">
       <div class="flex flex-col justify-center items-center my-10 mx-24">
         <h2 class="font-display text-4xl">No gym? No problem!</h2>
         <p class="mb-6">
