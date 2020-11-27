@@ -3,7 +3,10 @@
   export let user: User | undefined;
 </script>
 
-<div>
+<style lang="postcss">
+</style>
+
+<div class="text-white">
   {#if user}
     <h3>Hi {user.firstName} {user.lastName}</h3>
 
