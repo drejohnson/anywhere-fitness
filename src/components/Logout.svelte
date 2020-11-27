@@ -1,18 +1,21 @@
 <script lang="typescript">
   import { navigate } from "svelte-navigator";
-  import { request, gql } from "../graphql/request";
+  import { operationStore, query } from "@urql/svelte";
   import { auth, Status } from "../stores/auth";
 
-  const query = gql`
+  const logout_query = `
     mutation logoutUser {
       logoutUser
     }
   `;
 
-  let handleLogout = async () => {
-    await request(query);
+  const logoutStore = operationStore(logout_query);
+  query(logoutStore);
+
+  let handleLogout = (e: Event) => {
+    $logoutStore;
     auth.set({ status: Status.NOT_AUTHENTICATED });
-    // navigate('/', {replace: true})
+    navigate("/", { replace: true });
   };
 </script>
 
