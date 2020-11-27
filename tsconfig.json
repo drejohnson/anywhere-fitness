@@ -2,6 +2,7 @@
   "include": [
     "src",
     "api",
+    "lib",
     "types"
   ],
   "compilerOptions": {
