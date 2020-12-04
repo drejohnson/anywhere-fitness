@@ -1,19 +1,38 @@
-import type { Auth, User } from "./stores/auth";
+import type { Writable } from 'svelte/store'
+import type firebase from 'firebase/app';
 
 export type JsonValue = string | number | boolean | null | JsonValue[] | { [key: string]: JsonValue };
 
 export type JsonString = { [key: string]: string };
 export type JsonBool = { [key: string]: boolean };
 
-export interface SignupPayload {
-  createUser: {
-    user: User;
-    token: string;
-    error?: {
-      status: string;
-      message: string;
-    };
-  };
+export interface SubmitEvent {
+  detail: {store: Writable<JsonString>}
+}
+
+export enum Status {
+  AUTHENTICATING = "AUTHENTICATING",
+  AUTHENTICATED = "AUTHENTICATED",
+  NOT_AUTHENTICATED = "NOT_AUTHENTICATED",
+  HAS_ERRORS = "HAS_ERRORS"
+}
+
+export interface User {
+  user_id: string
+  name: string
+  email: string
+  picture: string
+}
+
+export interface TokenResult {
+  user: Partial<firebase.User>
+  token: string
+}
+
+export interface Auth {
+  status: Status
+  user?: Partial<firebase.User>
+  token?: string
 }
 
 export interface AuthInputs {
