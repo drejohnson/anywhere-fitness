@@ -6,6 +6,8 @@ export type JsonValue = string | number | boolean | null | JsonValue[] | { [key:
 export type JsonString = { [key: string]: string };
 export type JsonBool = { [key: string]: boolean };
 
+export type DynamicImport<T = unknown> = () => Promise<{ default: T; }>;
+
 export interface SubmitEvent {
   detail: {store: Writable<JsonString>}
 }
