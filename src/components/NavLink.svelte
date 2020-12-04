@@ -2,7 +2,7 @@
   import { Link } from "svelte-navigator";
 
   interface Props {
-    location: unknown;
+    location?: unknown;
     href: string;
     isPartiallyCurrent: boolean;
     isCurrent: boolean;
@@ -12,7 +12,7 @@
   export let styles = "";
 
   // eslint-disable-next-line no-unused-vars
-  function getProps({ location, href, isPartiallyCurrent, isCurrent }: Props) {
+  function getProps({ href, isPartiallyCurrent, isCurrent }: Props) {
     const isActive = href === "/" ? isCurrent : isPartiallyCurrent || isCurrent;
 
     // The object returned here is spread on the anchor element's attributes

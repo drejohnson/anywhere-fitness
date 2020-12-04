@@ -1,7 +1,12 @@
 <script lang="typescript">
   import { link } from "svelte-navigator";
-  import { auth, Status } from "../stores/auth";
+  import { initAuth } from "../stores/firebase-auth";
   import NavLink from "./NavLink.svelte";
+
+  const {
+    tokenResult
+  } = initAuth()
+  
 </script>
 
 <style lang="postcss">
@@ -22,17 +27,9 @@
   <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
     <NavLink to="browse"><span class="navlink">Browse</span></NavLink>
     <NavLink to="about"><span class="navlink">About</span></NavLink>
-    {#if $auth.status === Status.AUTHENTICATED}
-      <NavLink to="user/profile">
-        <span
-          class="font-display text-2xl ml-5 text-white hover:text-black border-2 border-solid border-white hover:bg-white rounded-full py-1 px-6">Profile</span>
-      </NavLink>
-    {:else}
-      <NavLink to="auth/client/login">
-        <span
-          class="font-display text-2xl ml-5 text-white hover:text-black border-2 border-solid border-white hover:bg-white rounded-full py-1 px-6">Sign
-          In</span>
-      </NavLink>
-    {/if}
+    <NavLink to={$tokenResult?.user ? "user/profile" : "auth/client/login"}>
+      <span
+        class="font-display text-base ml-5 text-white hover:text-black border-2 border-solid border-white hover:bg-white rounded-full py-1 px-6">{$tokenResult?.user ? "Profile" : "Sign in"}</span>
+    </NavLink>
   </nav>
 </header>

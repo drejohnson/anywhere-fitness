@@ -1,29 +1,19 @@
-<script lang="typescript">
-  import { auth, Status } from "../stores/auth";
-  import Profile from "../components/Profile.svelte";
-  import Logout from "../components/Logout.svelte";
+<script lang="ts">
+  import { initAuth } from "../stores/firebase-auth";
+  import ProfileInfo from '../components/ProfileInfo.svelte'
+  import Logout from '../components/Auth/Logout.svelte'
 
-  console.log($auth.user);
+  const { tokenResult } = initAuth()
 </script>
 
 <style lang="postcss">
-  /* your styles go here */
-  .bg-image {
-    @apply h-screen bg-cover bg-bottom;
-  }
+  
 </style>
 
-<div class="lg:flex">
-  <div class="w-full">
-    <section class="bg-image bg-black flex justify-center items-center">
-      <div class="w-full pt-24 px-64 z-10">
-        {#if $auth.status === Status.AUTHENTICATED}
-          <Profile user={$auth.user} />
-          <!-- <Logout /> -->
-        {:else}
-          <h3 class="text-white">Try logging in</h3>
-        {/if}
-      </div>
-    </section>
-  </div>
-</div>
+<section class="profile bg-black flex flex-col justify-center items-center w-full min-h-screen px-4">
+
+  {#if $tokenResult}
+     <ProfileInfo user={$tokenResult?.user} />
+     <Logout />
+  {/if}
+</section>

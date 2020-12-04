@@ -1,7 +1,7 @@
-<script lang="typescript">
+<script lang="ts">
 </script>
 
 <style>
 </style>
 
-<h1>Explore Classed</h1>
+<h1>Explore Classes</h1>
