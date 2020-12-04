@@ -3,15 +3,20 @@ export default function lazyload(node: HTMLElement) {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const lazyImage = entry.target as HTMLImageElement
-        lazyImage.src = lazyImage.dataset.src as string
-        lazyImage.classList.remove("lazy");
+        const lazyBackgroundImage = entry.target as HTMLElement
+        if (lazyImage.dataset.src) {
+          lazyImage.src = lazyImage.dataset.src as string
+          lazyImage.classList.remove("lazy");
+        } else {
+          lazyBackgroundImage.classList.add("visible");
+        }
       }
     })
   }
   let observer = new IntersectionObserver(onIntersection, {
     root: null,
     rootMargin: '0px',
-    threshold: 0.1,
+    threshold: 0.5,
   })
   observer.observe(node)
 
