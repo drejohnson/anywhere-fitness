@@ -1,0 +1,23 @@
+Update(Function("create_account_session"), {
+  "body": Query(
+    Lambda(
+      ["token"],
+      Let(
+        {
+          sessionExists: Exists(
+            Match(Index("session_by_token"), Var("token"))
+          ),
+          sessionRef: If(
+            Var("sessionExists"),
+            Get(Match(Index("session_by_token"), Var("token"))),
+            Create(Collection("Account_Session"), {
+              data: { jwt: Var("token") }
+            })
+          )
+        },
+        Create(Tokens(), { instance: Select("ref", Var("sessionRef")) })
+      )
+    )
+  )
+});
+

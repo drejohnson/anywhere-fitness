@@ -1,0 +1,22 @@
+Update(Function("create_user"), {
+  "body": Query(
+    Lambda(
+      ["email"],
+      Let(
+        {
+          userExists: Exists(
+            Match(Index("user_by_email"), Var("email"))
+          ),
+          userRef: If(
+            Var("userExists"),
+            Get(Match(Index("user_by_email"), Var("email"))),
+            Create(Collection("User"), {
+              data: { email: Var("email") }
+            })
+          )
+        },
+        Create(Tokens(), { instance: Select("ref", Var("userRef")) })
+      )
+    )
+  )
+});

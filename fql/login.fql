@@ -1,0 +1,93 @@
+Update(Function("login"), {
+  "body": Query(
+    Lambda(
+      ["email", "password"],
+      If(
+        Exists(Match(Index("accounts_by_email"), Var("email"))),
+        Let(
+          {
+            accountRef: Select(
+              [0],
+              Paginate(Match(Index("accounts_by_email"), Var("email")))
+            )
+          },
+          If(
+            Or(
+              Let(
+                {
+                  locked: Exists(
+                    Match(Index("accounts_locked_by_account"), Var("accountRef"))
+                  )
+                },
+                Var("locked")
+              ),
+              Not(Select(["data", "verified"], Get(Var("accountRef")), false))
+            ),
+            { access: false, refresh: false, account: false },
+            If(
+              Exists(Match(Index("accounts_by_email"), Var("email"))),
+              Let(
+                {
+                  accountRef: Select(
+                    [0],
+                    Paginate(Match(Index("accounts_by_email"), Var("email")))
+                  ),
+                  account: Get(Var("accountRef")),
+                  authenticated: Identify(Var("accountRef"), Var("password")),
+                  tokens: If(
+                    Var("authenticated"),
+                    Let(
+                      {
+                        refresh: Let(
+                          {
+                            session_refresh: Create(
+                              Collection("account_sessions"),
+                              {
+                                data: { account: Var("accountRef"), used: false }
+                              }
+                            )
+                          },
+                          {
+                            token: Create(Tokens(), {
+                              instance: Select(["ref"], Var("session_refresh")),
+                              ttl: TimeAdd(Now(), 28800, "seconds"),
+                              data: { type: "refresh" }
+                            }),
+                            session_refresh_doc: Var("session_refresh")
+                          }
+                        ),
+                        access: Create(Tokens(), {
+                          instance: Var("accountRef"),
+                          data: {
+                            type: "access",
+                            session: Select(
+                              ["ref"],
+                              Select(["session_refresh_doc"], Var("refresh"))
+                            )
+                          },
+                          ttl: TimeAdd(Now(), 600, "seconds")
+                        })
+                      },
+                      {
+                        refresh: Select(["token"], Var("refresh")),
+                        access: Var("access")
+                      }
+                    ),
+                    false
+                  )
+                },
+                {
+                  access: Select(["secret"], Select(["access"], Var("tokens")), false),
+                  refresh:  Select(["secret"], Select(["refresh"], Var("tokens")), false),
+                  account: If(Var("authenticated"), Select(["ref"], Var("account")), false)
+                }
+              ),
+              { access: false, refresh: false, account: false }
+            )
+          )
+        ),
+        { access: false, refresh: false, account: false }
+      )
+    )
+  )
+})

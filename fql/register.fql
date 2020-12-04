@@ -1,0 +1,30 @@
+Update(Function("register"), {
+  "body": Query(
+    Lambda(
+      ["email", "password"],
+      Let(
+        {
+          account: Create(Collection("accounts"), {
+            data: { email: Var("email") },
+            credentials: { password: Var("password") }
+          }),
+          verifyToken: Let(
+            {
+              verification_request: Create(
+                Collection("accounts_verification_request"),
+                { data: { account: Select(["ref"], Var("account")) } }
+              )
+            },
+            Create(Tokens(), {
+              instance: Select(["ref"], Var("verification_request"))
+            })
+          )
+        },
+        {
+          account: Select(["ref"], Var("account")),
+          verifyToken: Select("secret", Var("verifyToken"))
+        }
+      )
+    )
+  )
+});
