@@ -16,7 +16,7 @@
 
 <Hero
   styles={"z-50"}
-  image={"https://res.cloudinary.com/phreshr-media/image/upload/c_scale,q_80,w_2560/v1606967246/anywhere-fitness/outdoor-pushups.webp"}
+  image="{import.meta.env.SNOWPACK_PUBLIC_CLOUDINARY_URL}/v1607099917/anywhere-fitness/outdoor-push-ups-optimized.webp"
   gradient={"linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,1))"}>
   <div class="grid md:grid-cols-2 p-8">
     <div class="intro text-white mb-4">
