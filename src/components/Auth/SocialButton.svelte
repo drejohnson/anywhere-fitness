@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { navigate } from "svelte-navigator";
   import { initAuth } from "../../stores/firebase-auth";
 
   export let provider: string;
@@ -6,6 +7,16 @@
   const {
 		loginWithGoogle
   } = initAuth();
+
+  const handleLogin = async () => {
+    if (provider === 'google') {
+      await loginWithGoogle()
+    } 
+    if (provider === 'facebook') {
+      await loginWithGoogle()
+    }
+    navigate("/user/profile", { replace: true });
+  }
 </script>
 
 <style lang="postcss"> 
@@ -38,14 +49,14 @@
 <div>
   {#if provider === "google"}
     <button
-      onClick={() => loginWithGoogle()}
+      on:click={handleLogin}
       class="social-button google">
       <img class="icon" src="/social-icons/google.svg" alt="Google button" />
       <span class="text">Sign in with Google</span>
     </button>
   {:else if provider === "facebook"}
     <button
-      onClick={() => loginWithGoogle()}
+      on:click={handleLogin}
       class="social-button facebook">
       <img class="icon" src="/social-icons/facebook.svg" alt="Facebook button" />
       <span class="text">Sign in with Facebook</span>
