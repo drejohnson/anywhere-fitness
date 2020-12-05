@@ -19,6 +19,8 @@ export enum Status {
   HAS_ERRORS = "HAS_ERRORS"
 }
 
+export type FirebaseUser = Partial<firebase.User>
+
 export interface User {
   user_id: string
   name: string
@@ -27,13 +29,13 @@ export interface User {
 }
 
 export interface TokenResult {
-  user: Partial<firebase.User>
+  user: FirebaseUser
   token: string
 }
 
 export interface Auth {
   status: Status
-  user?: Partial<firebase.User>
+  user?: FirebaseUser
   token?: string
 }
 
