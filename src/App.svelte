@@ -11,6 +11,13 @@
 	import Auth from "./routes/Auth.svelte";
 	import Explore from "./routes/Explore.svelte";
 	import PrivateRoute from "@components/PrivateRoute.svelte";
+	import LazyRoute from "@components/LazyRoute.svelte";
+	import Loading from '@components/Loading.svelte';
+
+	const Home = () => import("@routes/Home.svelte");
+	const Profile = () => import("@routes/Profile.svelte");
+	const Explore = () => import("@routes/Explore.svelte");
+	const Auth = () => import("@routes/Auth.svelte");
 
 	let token: string
 
@@ -60,21 +67,24 @@
 <Router>
 	<Header />
 	<main>
-		<Route path="/">
-			<Home />
-		</Route>
-		<Route path="/explore">
-			<Explore />
-		</Route>
-		<PrivateRoute path="user/profile" let:location>
-			<Profile />
+		<LazyRoute path="/" component={Home} delayMs={100}>
+			<Loading />
+		</LazyRoute>
+		<LazyRoute path="/explore" component={Explore} delayMs={100}>
+			<Loading />
+		</LazyRoute>
+		<PrivateRoute path="user/*" let:location>
+			<LazyRoute path="/profile" component={Profile} delayMs={100}>
+				<Loading />
+			</LazyRoute>
 		</PrivateRoute>
 		<Route path="/auth/*">
 			<Route path="/client/*">
-				<Route path="/login">
-					<Auth />
-				</Route>
+				<LazyRoute path="/login" component={Auth} delayMs={100}>
+					<Loading />
+				</LazyRoute>
 			</Route>
+		</Route>
 		</Route>
 		<Route>
 			<h3>Oops...</h3>
