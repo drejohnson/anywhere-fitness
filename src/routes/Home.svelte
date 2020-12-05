@@ -1,20 +1,20 @@
 <script lang="ts">
   import { navigate } from 'svelte-navigator';
-  import { authStore, initAuth } from '../stores/firebase-auth'
-  import Hero from '../components/Hero.svelte'
-  import HeroInfo from '../components/HeroInfo.svelte'
-  import Button from '../components/Button.svelte'
-  import LandingContent from '../components/LandingContent.svelte';
+  import lazyload from '@actions/lazyload'
+  import Hero from '@components/Hero.svelte'
+  import HeroInfo from '@components/HeroInfo.svelte'
+  import Button from '@components/Button.svelte'
+  import LandingContent from '@components/LandingContent.svelte';
 
-  const { tokenResult } = initAuth()
-  console.log($authStore)
-  console.log($tokenResult)
 </script>
 
 <style lang="postcss">
 </style>
 
-<Hero image={"https://res.cloudinary.com/phreshr-media/image/upload/c_scale,q_80,w_2560/v1605975721/anywhere-fitness/splash-hero.webp"}>
+<Hero 
+  image_placeholder="{import.meta.env.SNOWPACK_PUBLIC_CLOUDINARY_PLACEHOLDER_URL}/v1607095969/anywhere-fitness/splash-hero-optimized.webp"
+  image="{import.meta.env.SNOWPACK_PUBLIC_CLOUDINARY_URL}/v1607095969/anywhere-fitness/splash-hero-optimized.webp"
+  >
   <div class="row-span-2 md:col-span-2">
     <HeroInfo 
       heading={"Welcome, The world is your gym."}
@@ -46,10 +46,13 @@
 
 <LandingContent>
   <img
+    use:lazyload
     slot="image"
-    src="https://res.cloudinary.com/phreshr-media/image/upload/c_scale,q_80,w_2560/v1606054232/anywhere-fitness/outdoor-med-ball.webp"
+    src="{import.meta.env.SNOWPACK_PUBLIC_CLOUDINARY_PLACEHOLDER_URL}/v1607098766/anywhere-fitness/outdoor-med-ball-optimized.webp"
+    data-src="{import.meta.env.SNOWPACK_PUBLIC_CLOUDINARY_URL}/v1607098766/anywhere-fitness/outdoor-med-ball-optimized.webp"
     alt="Man exercising with med ball"
-    class="w-full h-full md:h-400px object-cover object-center" />
+    class="lazy w-full h-full md:h-400px object-cover object-center"
+  />
   <h2 slot="heading" class="font-display text-4xl">
     Choose Your Own Adventure
   </h2>
