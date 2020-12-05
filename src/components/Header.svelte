@@ -10,9 +10,6 @@
 </script>
 
 <style lang="postcss">
-  .logo {
-    width: 200px;
-  }
   .navlink {
     @apply font-display text-2xl ml-5 text-white;
   }
@@ -20,7 +17,7 @@
 
 <header
   class="absolute w-full flex flex-wrap p-5 flex-col md:flex-row items-center z-50">
-  <a href="/" use:link class="logo">
+  <a href="/" use:link class="logo w-150px md:w-200px">
     <img src="/logo.svg" alt="Anywhere Fitness Logo" />
   </a>
 
