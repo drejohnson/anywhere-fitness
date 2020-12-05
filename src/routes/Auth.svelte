@@ -1,5 +1,4 @@
 <script lang="ts">
-
   import AuthLayout from '../components/Auth/AuthLayout.svelte'
   import RegisterForm from "../components/Auth/RegisterForm.svelte";
   import LoginForm from "../components/Auth/LoginForm.svelte";

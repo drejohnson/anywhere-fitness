@@ -1,6 +1,6 @@
 <script lang="typescript">
-  import type firebase from 'firebase/app';
-  export let user: Partial<firebase.User> | undefined;
+  import type { FirebaseUser } from '../types'
+  export let user: FirebaseUser | undefined;
 </script>
 
 <style lang="postcss">
