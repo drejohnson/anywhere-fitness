@@ -69,7 +69,7 @@ lazyLoad()
         }
         else {
           authStore.set({ status: Status.NOT_AUTHENTICATED })
-          navigate('/auth/client/login', {replace: true})
+          // navigate('/auth/client/login', {replace: true})
         }
       })
     }),
