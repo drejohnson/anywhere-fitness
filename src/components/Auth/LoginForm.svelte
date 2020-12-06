@@ -1,13 +1,8 @@
 <script lang="ts">
-  import { navigate } from "svelte-navigator";
   import type { SubmitEvent } from "../../types";
-  import { initAuth } from "../../stores/firebase-auth";
+  import { loginWithEmailPassword } from "../../stores/auth";
   import Form from "../Form/Form.svelte";
   import Input from "../Form/Input.svelte";
-
-  const {
-		loginWithEmailPassword,
-  } = initAuth();
 
   export let toggleShowLogin: () => boolean
 
@@ -24,7 +19,6 @@
 
 			// error = null;
 			await loginWithEmailPassword(input.email, input.password);
-      navigate("/user/profile", { replace: true });
       input = { email: "", password: "" };
 		} catch (err) {
       console.log(err)

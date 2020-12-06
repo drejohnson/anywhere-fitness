@@ -1,10 +1,7 @@
 <script lang="ts">
-  import { navigate } from "svelte-navigator";
   import { operationStore, query } from "@urql/svelte";
-  import { initAuth } from "../../stores/firebase-auth";
+  import { logout } from "../../stores/auth";
   import Button from '../Button.svelte'
-
-  const { logout } = initAuth()
 
   const logout_query = `
     mutation logoutUser {
@@ -19,7 +16,6 @@
     // $logoutStore;
     // auth.set({ status: Status.NOT_AUTHENTICATED });
     logout()
-    navigate("/", { replace: true });
   };
 </script>
 

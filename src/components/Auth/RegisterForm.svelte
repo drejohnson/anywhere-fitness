@@ -1,13 +1,10 @@
 <script lang="ts">
   import { navigate } from "svelte-navigator";
   import type { SubmitEvent } from "../../types";
-  import { initAuth } from "../../stores/firebase-auth";
+  import { createUserWithEmailAndPassword } from "../../stores/auth";
   import Form from "../Form/Form.svelte";
   import Input from "../Form/Input.svelte";
 
-  const {
-    createUserWithEmailAndPassword
-  } = initAuth();
 
   export let toggleShowLogin: () => boolean
 

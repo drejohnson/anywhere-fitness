@@ -2,7 +2,7 @@
 	import { Router, Route } from "svelte-navigator";
 	import firebase from "firebase/app";
 	import { createClient, setClient } from "@urql/svelte";
-	import { initAuth } from "@stores/firebase-auth";;
+	import { authStore } from "@stores/auth";;
 	import TailwindCss from "@components/TailwindCss.svelte";
 	import InlineSvg from "@components/InlineSvg.svelte";
 	import Header from "@components/Header.svelte";
@@ -22,21 +22,19 @@
 	// } = import.meta.env;
 
 	const firebaseConfig = {
-		apiKey: "AIzaSyCkoGKmHSi8cGEPrGy3gg-LBPEMuRG30bY",
-		authDomain: "anywhere-fitness-296903.firebaseapp.com",
-		databaseURL: "https://anywhere-fitness-296903.firebaseio.com",
-		projectId: "anywhere-fitness-296903",
-		storageBucket: "anywhere-fitness-296903.appspot.com",
-		messagingSenderId: "815294550864",
-		appId: "1:815294550864:web:8ddee6ee5b9b8840b91255",
-		measurementId: "G-S59WEXY9K2",
-	};
+		apiKey: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_API_KEY,
+		authDomain: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_AUTH_DOMAIN,
+		databaseURL: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_DATABASE_URL,
+		projectId: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_PROJECT_ID,
+		storageBucket: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_STORAGE_BUCKET,
+		messagingSenderId: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+		appId: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_APP_ID,
+		measurementId: import.meta.env.SNOWPACK_PUBLIC_FIREBASE_MEASUREMENT_ID,
+	}
 
 	if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
-	const { tokenResult } = initAuth();
-
-	tokenResult.subscribe(async user => {
+	authStore.subscribe(async user => {
 		token = user?.token as string
 	})
 
@@ -63,20 +61,20 @@
 <Router>
 	<Header />
 	<main>
-		<LazyRoute path="/" component={Home} delayMs={100}>
+		<LazyRoute path="/" component={Home}>
 			<Loading />
 		</LazyRoute>
-		<LazyRoute path="/explore" component={Explore} delayMs={100}>
+		<LazyRoute path="/explore" component={Explore}>
 			<Loading />
 		</LazyRoute>
-		<PrivateRoute path="user/*" let:location>
-			<LazyRoute path="/profile" component={Profile} delayMs={100}>
+		<PrivateRoute path="user/profile" let:location>
+			<LazyRoute path="/" component={Profile}>
 				<Loading />
 			</LazyRoute>
 		</PrivateRoute>
 		<Route path="/auth/*">
 			<Route path="/client/*">
-				<LazyRoute path="/login" component={Auth} delayMs={100}>
+				<LazyRoute path="/login" component={Auth}>
 					<Loading />
 				</LazyRoute>
 			</Route>

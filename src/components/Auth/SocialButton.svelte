@@ -1,12 +1,8 @@
 <script lang="ts">
-  import { navigate } from "svelte-navigator";
-  import { initAuth } from "../../stores/firebase-auth";
+  import { loginWithGoogle } from "../../stores/auth";
 
   export let provider: string;
-  
-  const {
-		loginWithGoogle
-  } = initAuth();
+
 
   const handleLogin = async () => {
     if (provider === 'google') {
@@ -15,7 +11,6 @@
     if (provider === 'facebook') {
       await loginWithGoogle()
     }
-    navigate("/user/profile", { replace: true });
   }
 </script>
 

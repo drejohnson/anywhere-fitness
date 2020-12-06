@@ -1,21 +1,23 @@
   
 <script>
+	import { Status } from "../types";
+	import { onMount } from "svelte";
 	import { useNavigate, useLocation } from "svelte-navigator";
-  import { initAuth } from "../stores/firebase-auth";
-  
-  const { tokenResult } = initAuth()
+  import { authStore } from "../stores/auth";
 
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	$: if (!$tokenResult?.user) {
+	$: authenticated = $authStore.status === Status.AUTHENTICATED;
+	
+	$: if (!authenticated) {
 		navigate("/auth/client/login", {
 			state: { from: $location.pathname },
-			replace: true,
-		});
+			replace: true
+		})
 	}
 </script>
 
-{#if $tokenResult?.user}
+{#if authenticated}
 	<slot />
 {/if}
