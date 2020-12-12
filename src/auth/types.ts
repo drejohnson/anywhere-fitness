@@ -53,7 +53,7 @@ export type AuthEvent =
   | { type: 'done.invoke.authChecker', data: firebase.User }
   | { type: "LOGOUT" }
   | { type: "LOGIN", provider: string, email: string, password: string, data: Partial<UserClaims> }
-  | { type: "REGISTER", email: string, password: string, data: Partial<firebase.User> }
+  | { type: "REGISTER", email: string, password: string, data: Partial<UserClaims> }
   | { type: "ERROR", data: string };
 
 export type AuthState =
