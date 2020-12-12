@@ -1,6 +1,10 @@
 import type firebase from 'firebase/app';
 import type { ActionFunction, ActionObject, EventObject, ServiceConfig, StateMachine } from 'xstate';
 
+export type TokenResult = Partial<firebase.auth.IdTokenResult>
+
+export type UserClaims = TokenResult['claims']
+
 export interface User {
   user_id: string
   name: string
@@ -33,7 +37,7 @@ export interface AuthStateSchema {
 
 export interface AuthContext {
   auth?: firebase.User
-  user?: UserMapped
+  user?: Partial<UserClaims>
   error?: string
 }
 
@@ -48,8 +52,8 @@ export interface AuthContext {
 export type AuthEvent =
   | { type: 'done.invoke.authChecker', data: firebase.User }
   | { type: "LOGOUT" }
-  | { type: "LOGIN", provider: string, email: string, password: string, data: UserMapped }
-  | { type: "REGISTER", email: string, password: string, data: UserMapped }
+  | { type: "LOGIN", provider: string, email: string, password: string, data: Partial<UserClaims> }
+  | { type: "REGISTER", email: string, password: string, data: Partial<firebase.User> }
   | { type: "ERROR", data: string };
 
 export type AuthState =
