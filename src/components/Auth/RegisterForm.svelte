@@ -1,7 +1,7 @@
 <script lang="ts">
   import { navigate } from "svelte-navigator";
   import type { SubmitEvent } from "../../types";
-  import { createUserWithEmailAndPassword } from "../../stores/auth";
+  import { send } from "../../auth";
   import Form from "../Form/Form.svelte";
   import Input from "../Form/Input.svelte";
 
@@ -10,7 +10,7 @@
 
   let input = { email: "", password: "" };
 
-  const onSubmit = async (event: SubmitEvent) => {
+  const onSubmit = (event: SubmitEvent) => {
 		try {
       const { store } = event.detail
 
@@ -20,8 +20,11 @@
       });
 
 			// error = null;
-			await createUserWithEmailAndPassword(input.email, input.password);
-      navigate("/user/profile", { replace: true });
+			send('REGISTER', {
+        email: input.email,
+        password: input.password
+      });
+      // navigate("/user/profile", { replace: true });
       input = { email: "", password: "" };
 		} catch (err) {
       console.log(err)

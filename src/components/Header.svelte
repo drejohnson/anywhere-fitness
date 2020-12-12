@@ -1,9 +1,9 @@
 <script lang="typescript">
   import { link } from "svelte-navigator";
-  import { authStore } from "../stores/auth";
+  import { state } from "../auth";
   import NavLink from "./NavLink.svelte";
 
-  
+  $: signedIn = $state.matches('loggedIn')
 </script>
 
 <style lang="postcss">
@@ -21,9 +21,9 @@
   <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
     <NavLink to="browse"><span class="navlink">Browse</span></NavLink>
     <NavLink to="about"><span class="navlink">About</span></NavLink>
-    <NavLink to={$authStore?.user ? "user/profile" : "auth/client/login"}>
+    <NavLink to={signedIn ? "user/profile" : "auth/client/login"}>
       <span
-        class="font-display text-base ml-5 text-white hover:text-black border-2 border-solid border-white hover:bg-white rounded-full py-1 px-6">{$authStore?.user ? "Profile" : "Sign in"}</span>
+        class="font-display text-base ml-5 text-white hover:text-black border-2 border-solid border-white hover:bg-white rounded-full py-1 px-6">{signedIn ? "Profile" : "Sign in"}</span>
     </NavLink>
   </nav>
 </header>

@@ -1,14 +1,14 @@
   
-<script>
-	import { Status } from "../types";
-	import { onMount } from "svelte";
+<script lang="ts">
 	import { useNavigate, useLocation } from "svelte-navigator";
-  import { authStore } from "../stores/auth";
+	import { state } from '../auth'
 
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	$: authenticated = $authStore.status === Status.AUTHENTICATED;
+	$: authenticated = $state.matches('loggedIn');
+	$: console.log("authenticated", authenticated)
+	$: console.log("private guard", $state)
 	
 	$: if (!authenticated) {
 		navigate("/auth/client/login", {

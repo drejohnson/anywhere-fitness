@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { SubmitEvent } from "../../types";
-  import { loginWithEmailPassword } from "../../stores/auth";
+  import { send } from "../../auth";
   import Form from "../Form/Form.svelte";
   import Input from "../Form/Input.svelte";
 
@@ -17,8 +17,13 @@
         input["password"] = v["password"]
       });
 
-			// error = null;
-			await loginWithEmailPassword(input.email, input.password);
+      // error = null;
+      send('LOGIN', {
+        provider: 'email',
+        email: input.email,
+        password: input.password
+      });
+			// await loginWithEmailPassword(input.email, input.password);
       input = { email: "", password: "" };
 		} catch (err) {
       console.log(err)
