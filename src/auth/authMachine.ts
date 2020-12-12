@@ -190,7 +190,7 @@ export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
         // auth object is already set on the app context
         // by authChecker service
         context.auth?.getIdTokenResult()
-          .then(({ claims }) => userMapper(claims))
+          .then(({ claims }) => claims)
           .then(resolve);
       });
     },
