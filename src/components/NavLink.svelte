@@ -1,5 +1,5 @@
 <script lang="typescript">
-  import { Link } from "svelte-navigator";
+  import { Link } from 'svelte-navigator';
 
   interface Props {
     location?: unknown;
@@ -8,12 +8,12 @@
     isCurrent: boolean;
   }
 
-  export let to = "";
-  export let styles = "";
+  export let to = '';
+  export let styles = '';
 
   // eslint-disable-next-line no-unused-vars
   function getProps({ href, isPartiallyCurrent, isCurrent }: Props) {
-    const isActive = href === "/" ? isCurrent : isPartiallyCurrent || isCurrent;
+    const isActive = href === '/' ? isCurrent : isPartiallyCurrent || isCurrent;
 
     // The object returned here is spread on the anchor element's attributes
     if (isActive) {

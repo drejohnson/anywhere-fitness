@@ -5,7 +5,7 @@
   import LoginForm from "../components/Auth/LoginForm.svelte";
   import SocialAuth from '../components/Auth/SocialAuth.svelte'
   import { state } from '../auth';
-import Loading from '@components/Loading.svelte';
+  import Loading from '@components/Loading.svelte';
 
   let showLogin = true
   

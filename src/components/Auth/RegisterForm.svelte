@@ -1,49 +1,45 @@
 <script lang="ts">
-  import { navigate } from "svelte-navigator";
-  import type { SubmitEvent } from "../../types";
-  import { send } from "../../auth";
-  import Form from "../Form/Form.svelte";
-  import Input from "../Form/Input.svelte";
+  import { navigate } from 'svelte-navigator';
+  import type { SubmitEvent } from '../../types';
+  import { send } from '../../auth';
+  import Form from '../Form/Form.svelte';
+  import Input from '../Form/Input.svelte';
 
+  export let toggleShowLogin: () => boolean;
 
-  export let toggleShowLogin: () => boolean
-
-  let input = { email: "", password: "" };
+  let input = { email: '', password: '' };
 
   const onSubmit = (event: SubmitEvent) => {
-		try {
-      const { store } = event.detail
+    try {
+      const { store } = event.detail;
 
       store.subscribe((v) => {
-        input["email"] = v["email"]
-        input["password"] = v["password"]
+        input['email'] = v['email'];
+        input['password'] = v['password'];
       });
 
-			// error = null;
-			send('REGISTER', {
+      // error = null;
+      send('REGISTER', {
         email: input.email,
-        password: input.password
+        password: input.password,
       });
       // navigate("/user/profile", { replace: true });
-      input = { email: "", password: "" };
-		} catch (err) {
-      console.log(err)
-			// error = err;
-		}
-	};
+      input = { email: '', password: '' };
+    } catch (err) {
+      console.log(err);
+      // error = err;
+    }
+  };
 </script>
 
 <style lang="postcss">
-  
 </style>
 
 <header class="text-sm md:text-xl">
   <h1>Create an account</h1>
   <h4>
     Have an account?
-    <button on:click={toggleShowLogin} class="underline">
-      Sign in
-    </button>
+    <button on:click={toggleShowLogin} class="underline"> Sign in </button>
   </h4>
 </header>
 <Form on:submit={onSubmit} name="Create Account" let:store>

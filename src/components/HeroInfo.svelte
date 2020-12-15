@@ -1,6 +1,6 @@
 <script lang="ts">
   export let heading: string;
-  export let subHeading: string | null
+  export let subHeading: string | null;
 </script>
 
 <style lang="postcss">
@@ -11,9 +11,7 @@
     {heading}
   </h1>
   {#if subHeading}
-    <h3 class="text-2xl text-white mb-4">
-      {subHeading}
-    </h3>
+    <h3 class="text-2xl text-white mb-4">{subHeading}</h3>
   {/if}
-  <slot></slot>
+  <slot />
 </div>

@@ -1,39 +1,38 @@
 <script lang="ts">
-  import type { SubmitEvent } from "../../types";
-  import { send } from "../../auth";
-  import Form from "../Form/Form.svelte";
-  import Input from "../Form/Input.svelte";
+  import type { SubmitEvent } from '../../types';
+  import { send } from '../../auth';
+  import Form from '../Form/Form.svelte';
+  import Input from '../Form/Input.svelte';
 
-  export let toggleShowLogin: () => boolean
+  export let toggleShowLogin: () => boolean;
 
-  let input = { email: "", password: "" };
+  let input = { email: '', password: '' };
 
   const onSubmit = async (event: SubmitEvent) => {
-		try {
-      const { store } = event.detail
+    try {
+      const { store } = event.detail;
 
       store.subscribe((v) => {
-        input["email"] = v["email"]
-        input["password"] = v["password"]
+        input['email'] = v['email'];
+        input['password'] = v['password'];
       });
 
       // error = null;
       send('LOGIN', {
         provider: 'email',
         email: input.email,
-        password: input.password
+        password: input.password,
       });
-			// await loginWithEmailPassword(input.email, input.password);
-      input = { email: "", password: "" };
-		} catch (err) {
-      console.log(err)
-			// error = err;
-		}
-	};
+      // await loginWithEmailPassword(input.email, input.password);
+      input = { email: '', password: '' };
+    } catch (err) {
+      console.log(err);
+      // error = err;
+    }
+  };
 </script>
 
 <style lang="postcss">
-  
 </style>
 
 <header class="text-sm md:text-xl">
