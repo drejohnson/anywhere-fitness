@@ -35,10 +35,17 @@ export function useMachine<
     TTypestate>, 
     options: TTMachineOptions<TContext, TEvent> = {}): UseMachineResponse<TContext, TEvent, TTypestate> {
   const service = interpret(machine, options)
-  const store = readable(service.initialState, set => {
-    // triggered on every state change
-    service.onTransition(newState => set(newState)).start()
-    return service.stop
+
+  const state = readable(service.initialState, setState => {
+    service.onTransition(currentState => {
+      if (currentState.changed) {
+        setState(currentState)
+      }
+    }).start()
+
+    return (): void => {
+      service.stop()
+    }
   })
 
   return {
