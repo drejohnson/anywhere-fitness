@@ -20,6 +20,8 @@ module.exports = {
         '500px': '500px'
       },
       height: {
+        'screen-90': '90vh',
+        'screen-80': '80vh',
         '100px': '100px',
         '200px': '200px',
         '300px': '300px',
