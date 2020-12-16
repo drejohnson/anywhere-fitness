@@ -160,7 +160,17 @@ export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
         assertEventType(event, "ERROR");
         return event.data
       }
-    })
+    }),
+  },
+  guards: {
+    checkEmail: (_, event) => {
+      assertEventType(event, "REGISTER");
+      return !emailReg.test(event.email)
+    },
+    checkPassword: (_, event) => {
+      assertEventType(event, "REGISTER");
+      return !passwordReg.test(event.password)
+    }
   },
   services: {
     // ...services,
