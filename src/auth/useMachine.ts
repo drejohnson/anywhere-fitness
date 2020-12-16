@@ -49,7 +49,7 @@ export function useMachine<
   })
 
   return {
-    state: store,
+    state,
     send: service.send
   };
 }
