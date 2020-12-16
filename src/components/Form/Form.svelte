@@ -13,13 +13,6 @@
 <style lang="postcss">
 </style>
 
-<form
-  class="flex flex-col"
-  on:submit|preventDefault={onSubmit}
-  {...$$restProps}>
+<form id="form" on:submit|preventDefault={onSubmit} {...$$restProps}>
   <slot {store} />
-
-  <button class="btn btn-white-outline rounded-full text-xs mt-6 self-end">
-    {name}
-  </button>
 </form>
