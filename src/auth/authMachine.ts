@@ -5,7 +5,7 @@ import type {
   AuthEvent, 
   AuthState,
 } from './types'
-import { assertEventType, userMapper } from './utils';
+import { assertEventType, emailReg, passwordReg, userMapper } from './utils';
 
 export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
   id: 'authentication',
@@ -36,7 +36,7 @@ export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
           }
         }) },
         onError: {
-          target: 'loggedOut.failure',
+          target: 'loggedOut.authFailed',
           actions: ['setError', 'clearAuth']
         }
       }
@@ -47,14 +47,16 @@ export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
       on: { LOGOUT: { target: 'loggingOut' } }
     },
     // loggedOut has two sub-states
-    // we will transition to failure in
+    // we will transition to authFailed in
     // case of wrong password, username
     // or network error
     loggedOut: {
       initial: 'ok',
       states: {
         ok: { type: 'final' },
-        failure: {}
+        invalidEmail: {},
+        invalidPassword: {},
+        authFailed: {}
       },
       on: {
         LOGIN: { target: 'loggingIn' },
@@ -71,9 +73,9 @@ export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
           actions: assign({ error: (context, event) => undefined })
         },
         onError: {
-          // transition to failure state
+          // transition to authFailed state
           // and set an error
-          target: 'loggedOut.failure',
+          target: 'loggedOut.authFailed',
           actions: assign({
             error: (context, event) => {
               assertEventType(event, "ERROR");
@@ -93,9 +95,9 @@ export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
           actions: assign({ error: (context, event) => undefined })
         },
         onError: {
-          // transition to failure state
+          // transition to authFailed state
           // and set an error
-          target: 'loggedOut.failure',
+          target: 'loggedOut.authFailed',
           actions: assign({
             error: (context, event) => {
               assertEventType(event, "ERROR");
@@ -119,7 +121,7 @@ export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
           ]
         },
         onError: {
-          target: 'loggedOut.failure',
+          target: 'loggedOut.authFailed',
           actions: [
             // clear auth
             assign({
@@ -174,7 +176,7 @@ export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
   },
   services: {
     // ...services,
-    authChecker: (context, event) =>
+    authChecker: () =>
       new Promise((resolve, reject) => {
         const unsubscribe = auth.onIdTokenChanged(auth => {
           unsubscribe();
