@@ -1,8 +1,9 @@
 <script lang="ts">
   import type { SubmitEvent } from '../../types';
   import { send } from '../../auth';
-  import Form from '../Form/Form.svelte';
-  import Input from '../Form/Input.svelte';
+  import Form from '@components/Form/Form.svelte';
+  import Input from '@components/Form/Input.svelte';
+  import SubmitButton from '@components/Form/SubmitButton.svelte';
 
   export let toggleShowLogin: () => boolean;
 
@@ -25,9 +26,8 @@
       });
       // await loginWithEmailPassword(input.email, input.password);
       input = { email: '', password: '' };
-    } catch (err) {
-      console.log(err);
-      // error = err;
+    } catch (error) {
+      console.log(error.response.data.message);
     }
   };
 </script>
@@ -48,4 +48,5 @@
 <Form on:submit={onSubmit} name="Sign in" let:store>
   <Input {store} type="email" name="email" placeholder="Email" />
   <Input {store} type="password" name="password" placeholder="Password" />
+  <SubmitButton name="Sign In" />
 </Form>
