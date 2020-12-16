@@ -18,3 +18,8 @@ export const userMapper = (claims: Partial<User>) => ({
 	email: claims.email,
 	picture: claims.picture
 });
+
+// https://www.w3resource.com/javascript/form/email-validation.php
+export const emailReg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+// https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
+export const passwordReg = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
