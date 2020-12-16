@@ -27,11 +27,13 @@ export interface AuthStateSchema {
     loggedOut: {
       states: {
         ok: {},
-        failure: {}
+        invalidEmail: {},
+        invalidPassword: {},
+        authFailed: {}
       }
     };
     loggingIn: {};
-    loggingOut: {}
+    loggingOut: {};
   };
 }
 
@@ -51,6 +53,7 @@ export interface AuthContext {
 
 export type AuthEvent =
   | { type: 'done.invoke.authChecker', data: firebase.User }
+  | { type: 'error.invoke.createUser', data: string }
   | { type: "LOGOUT" }
   | { type: "LOGIN", provider: string, email: string, password: string, data: Partial<UserClaims> }
   | { type: "REGISTER", email: string, password: string, data: Partial<UserClaims> }
@@ -85,9 +88,5 @@ export type AuthState =
     value: 'loggingOut';
     context: AuthContext & { user: undefined; error: undefined };
   }
-  | {
-      value: 'error';
-      context: AuthContext & { user: undefined; error: string };
-    };
 
 export type AuthMachine = StateMachine<AuthContext, AuthStateSchema, AuthEvent, any>
