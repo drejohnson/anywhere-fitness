@@ -1,23 +1,22 @@
-  
-<script>
-	import { Status } from "../types";
-	import { onMount } from "svelte";
-	import { useNavigate, useLocation } from "svelte-navigator";
-  import { authStore } from "../stores/auth";
+<script lang="ts">
+  import { useNavigate, useLocation } from 'svelte-navigator';
+  import { state } from '../auth';
 
-	const navigate = useNavigate();
-	const location = useLocation();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-	$: authenticated = $authStore.status === Status.AUTHENTICATED;
-	
-	$: if (!authenticated) {
-		navigate("/auth/client/login", {
-			state: { from: $location.pathname },
-			replace: true
-		})
-	}
+  $: authenticated = $state.matches('loggedIn');
+  $: console.log('authenticated', authenticated);
+  $: console.log('private guard', $state);
+
+  $: if (!authenticated) {
+    navigate('/auth/client/login', {
+      state: { from: $location.pathname },
+      replace: true,
+    });
+  }
 </script>
 
 {#if authenticated}
-	<slot />
+  <slot />
 {/if}

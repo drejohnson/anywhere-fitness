@@ -1,5 +1,4 @@
 <script lang="ts">
-  
 </script>
 
 <style lang="postcss">
@@ -13,7 +12,7 @@
   .loader {
     --border-width: 1px;
     --loader-size: 100px;
-    
+
     animation: spin 1.2s ease-in-out infinite;
     border: var(--border-width) solid transparent;
     border-top-color: #537d8b;
@@ -23,7 +22,7 @@
     margin: 0 auto;
     position: relative;
     width: var(--loader-size);
-    
+
     & div {
       animation: spin 1s ease-in-out infinite;
       border: var(--border-width) solid transparent;
@@ -51,23 +50,21 @@
     0% {
       transform: rotate(0deg);
     }
-    
+
     50% {
-      box-shadow: 0 -2px 4px rgba(#fff, .2);
-      opacity: .7;
+      box-shadow: 0 -2px 4px rgba(#fff, 0.2);
+      opacity: 0.7;
     }
-    
+
     100% {
       transform: rotate(360deg);
     }
   }
-  
 </style>
 
 <div class="loader-container">
   <div class="loader">
-    <div></div>
-    <div></div>
+    <div />
+    <div />
   </div>
 </div>
-
