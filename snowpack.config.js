@@ -72,6 +72,7 @@ module.exports = {
     "@components": "./src/components",
     "@routes": "./src/routes",
     "@stores": "./src/stores",
+    "@auth": "./src/auth",
     "@actions": "./src/actions",
     "@utils": "./src/utils",
     "@api": "./api",

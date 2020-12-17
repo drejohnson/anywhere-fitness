@@ -27,6 +27,9 @@
       "@actions/*": [
         "src/actions/*"
       ],
+      "@auth/*": [
+        "src/auth/*"
+      ],
       "@stores/*": [
         "src/stores/*"
       ],

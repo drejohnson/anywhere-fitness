@@ -8,7 +8,6 @@
   import PrivateRoute from '@components/PrivateRoute.svelte';
   import LazyRoute from '@components/LazyRoute.svelte';
   import Loading from '@components/Loading.svelte';
-  import { getCoordinates } from '@stores/location';
 
   const Home = () => import('@routes/Home.svelte');
   const Profile = () => import('@routes/Profile.svelte');
@@ -39,8 +38,6 @@
 
     setClient(client);
   }
-
-  console.log('city from coordinates', getCoordinates());
 
   $: authenticating = $state.matches('authenticating');
   $: loading = $state.matches('loading');

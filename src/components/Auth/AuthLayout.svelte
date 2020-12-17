@@ -4,14 +4,6 @@
 </script>
 
 <style lang="postcss">
-  .logo {
-    display: block;
-    width: 100px;
-
-    @media (min-width: 768px) {
-      width: 150px;
-    }
-  }
 </style>
 
 <Hero
@@ -21,7 +13,7 @@
   <div class="grid md:grid-cols-2 p-8">
     <div class="intro text-white mb-4">
       <a href="/" use:link>
-        <img class="logo" src="/logo.svg" alt="Anywhere Fitness Logo" />
+        <img class="logo w-150px md:w-200px" src="/logo.svg" alt="Anywhere Fitness Logo" />
       </a>
       <slot name="subTitle"></slot>
     </div>
