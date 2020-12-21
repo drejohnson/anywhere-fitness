@@ -1,0 +1,12 @@
+Query(
+  Lambda(
+    ["secret"],
+    Let(
+      {
+        tokenRef: Select(["ref"], KeyFromSecret(Var("secret"))),
+        tokenID: Select(["id"], Var("tokenRef"))
+      },
+      Delete(Ref(Tokens(), Var("tokenID")))
+    )
+  )
+)
