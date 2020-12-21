@@ -1,5 +1,3 @@
-import { useLocation } from "./getCurrentLocation";
-
 interface Coordinates {
   lat: number;
   lng: number;
@@ -20,9 +18,6 @@ export function getCoordinates(fn: getCityFn) {
     const lng = crd.longitude; 
     console.log(`Latitude: ${lat}, Longitude: ${lng}`); 
 
-    // useLocation({lat, lng}).subscribe(result => {
-    //   console.log('store result', result)
-    // })
     fn({lat, lng}); 
     return; 
 
