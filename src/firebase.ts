@@ -18,16 +18,41 @@ const useRedirect = false
 
 export const auth = firebase.auth();
 
+const refreshToken = async (userCredentail: firebase.auth.UserCredential) => {
+  if (userCredentail.user) {
+    const email = userCredentail.user.email
+
+    const res = await fetch('/api/refresh-token', {
+      method: 'POST',
+      body: JSON.stringify({
+        email
+      })
+    })
+
+    const { status } = await res.json()
+
+    if ( status === 'sucess')
+      auth.currentUser?.getIdToken(true);
+  }
+}
+
 export const createUserWithEmailAndPassword = (email: string, password: string) =>
     auth.createUserWithEmailAndPassword(email, password);
 
 export const loginWithEmailPassword = (email:string, password:string) =>
-  auth.signInWithEmailAndPassword(email, password);
+  auth.signInWithEmailAndPassword(email, password).then(async result => {
+    refreshToken(result)
+  });
 
-export const loginWithGoogle = () => {
+export const loginWithGoogle = async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
 
   return useRedirect
-    ? auth.signInWithRedirect(provider)
-    : auth.signInWithPopup(provider);
+    ? await auth.signInWithPopup(provider).then(async (result) => {
+        refreshToken(result)
+      })
+    : auth.signInWithRedirect(provider).then(async () => {
+        const result = await auth.getRedirectResult()
+        refreshToken(result)
+    })
 };
