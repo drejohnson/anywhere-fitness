@@ -6,7 +6,7 @@
 <style lang="postcss">
 </style>
 
-<div class="mt-4">
+<div class="flex flex-col justify-center mt-4">
   <h4 class="text-white mb-2">Or {type} with your social account</h4>
   <SocialButton provider={'google'} />
   <SocialButton provider={'facebook'} />
