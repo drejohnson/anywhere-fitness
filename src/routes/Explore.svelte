@@ -56,9 +56,9 @@
   <h2 slot="heading" class="font-display text-2xl text-white">
     We can't focus on health & wellness without fighting for Black lives.
   </h2>
-  <p slot="text" class="text-white">
-    We are committed to building an inclusive and anti-racist community. Here’s
-    what we’re doing to stand with #BlackLivesMatter
+  <p slot="text" class="text-white text-center">
+    We are genuinely committed to building a diverse and inclusive fitness
+    community with zero-tolerance for hate or racism. #BlackLivesMatter
   </p>
   <div slot="cta" class="mt-6">
     <Button text="We support the Black Lives Matter Movement" />
