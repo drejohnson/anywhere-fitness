@@ -30,7 +30,7 @@
     for={$$restProps.name}>{$$restProps.placeholder}</label>
 {/if}
 <input
-  class={styleClasses.length > 0 ? styleClasses : 'input w-full bg-transparent py-2 border-b border-white focus:outline-none placeholder-gray-300'}
+  class={styleClasses.length > 0 ? styleClasses : 'input w-full bg-transparent py-2 px-3 border-2 border-white rounded-full mt-4 focus:outline-none placeholder-gray-300'}
   bind:value
   on:input={onInput}
   {name}

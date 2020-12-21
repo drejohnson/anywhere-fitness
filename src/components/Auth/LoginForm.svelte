@@ -45,8 +45,10 @@
   </h4>
 </header>
 
-<Form on:submit={onSubmit} name="Sign in" let:store>
-  <Input {store} type="email" name="email" placeholder="Email" />
-  <Input {store} type="password" name="password" placeholder="Password" />
-  <SubmitButton name="Sign In" />
-</Form>
+<div class="w-full">
+  <Form on:submit={onSubmit} name="Sign in" let:store>
+    <Input {store} type="email" name="email" placeholder="Email" />
+    <Input {store} type="password" name="password" placeholder="Password" />
+    <SubmitButton name="Sign In" />
+  </Form>
+</div>
