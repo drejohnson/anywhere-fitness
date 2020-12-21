@@ -1,0 +1,16 @@
+Query(
+  Lambda(
+    ["secret", "email"],
+    Let(
+      {
+        userRef: Get(Match(Index("user_by_email"), Var("email"))),
+        tokenRef: Select(["ref"], KeyFromSecret(Var("secret"))),
+        tokenID: Select(["id"], Var("tokenRef"))
+      },
+      Do(
+        Delete(Ref(Tokens(), Var("tokenID"))),
+        Create(Tokens(), { instance: Select("ref", Var("userRef")) })
+      )
+    )
+  )
+)

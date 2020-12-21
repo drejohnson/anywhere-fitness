@@ -62,8 +62,19 @@ export const onCreate = functions.auth.user().onCreate(async user => {
 export const onDelete = functions.auth.user().onDelete(async user => {
   try {
     const currentCustomClaims = user.customClaims;
-    const { user_id } = currentCustomClaims?.["https://fauna.com/user_metadata"] as Claims
-    return await client.query(q.Delete(q.Ref(q.Collection("User"), user_id)))
+    const { user_id, secret } = currentCustomClaims?.["https://fauna.com/user_metadata"] as Claims
+    return await client.query(
+      q.Do(
+        q.Call(
+          q.Function("delete_token"),
+          secret
+        ),
+        q.Call(
+          q.Function("delete_user"),
+          user_id
+        )
+      )
+    )
   } catch (error) {
     console.log(error)
     throw new Error('onDelete function failed')

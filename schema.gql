@@ -1,6 +1,7 @@
 enum UserRole {
   INSTRUCTOR
   CLIENT
+  ADMIN
 }
 
 enum Weekday {
@@ -25,6 +26,18 @@ enum FitnessLevel {
   ADVANCED
 }
 
+enum WorkoutType {
+  YOGA
+  MINDFULNESS
+  PILATES
+  AEROBICS
+  HIIT
+  CROSSFIT
+  BOOTCAMP
+  RUNNING
+  DANCE
+}
+
 type User {
   email: String! @unique
   firstName: String
@@ -44,16 +57,10 @@ type User {
   workouts: [Workout!] @relation
 }
 
-type AuthPayload @embedded {
-  token: String
-  user: User
-  error: ErrorStatus
-}
-
 type Workout {
   name: String!
   description: String!
-  type: String!
+  type: Workout!
   intensityLevel: String!
   days: [Weekday!]
   startTime: String!
@@ -69,19 +76,6 @@ type Workout {
   reservations: [User!] @relation
 }
 
-input CreateUserInput {
-  firstName: String
-  lastName: String
-  email: String!
-  password: String!
-  role: UserRole!
-}
-
-input LoginUserInput {
-  email: String!
-  password: String!
-}
-
 input LogoutInput {
   allTokens: Boolean
 }
@@ -90,13 +84,17 @@ input ReserveWorkoutInput {
   workoutID: String!
 }
 
-type ErrorStatus @embedded {
-  status: String
-  message: String
-}
-
 type StatusResult @embedded {
   status: String!
+}
+
+type TokenInstance @embedded {
+  id: String!
+}
+
+type TokenResult @embedded {
+  secret: String!
+  instance: TokenInstance!
 }
 
 type Query {
@@ -105,9 +103,8 @@ type Query {
 }
 
 type Mutation {
-  createUser(input: CreateUserInput): AuthPayload! @resolver(name: "create_user")
-  loginUser(input: LoginUserInput): AuthPayload! @resolver(name: "login_user")
-  logoutUser(data: LogoutInput): Boolean! @resolver(name: "logout_user")
+  onLogin(email: String!): TokenResult @resolver(name: "on_login")
+  onLogout(data: LogoutInput): Boolean! @resolver(name: "on_logout")
   reserveWorkout(input: ReserveWorkoutInput): Workout! @resolver(name: "reserve_workout")
   cancelReservation(input: ReserveWorkoutInput): Workout! @resolver(name: "cancel_reservation")
   cascadeDeleteReservation(input: ReserveWorkoutInput): StatusResult @resolver(name: "cascade_delete_workout")

@@ -2,7 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import { writable } from 'svelte/store';
 
-  export let name: string;
+  export const name: string = '';
 
   const dispatch = createEventDispatcher();
 
@@ -13,6 +13,10 @@
 <style lang="postcss">
 </style>
 
-<form id="form" on:submit|preventDefault={onSubmit} {...$$restProps}>
+<form
+  id="form"
+  class="flex flex-col"
+  on:submit|preventDefault={onSubmit}
+  {...$$restProps}>
   <slot {store} />
 </form>

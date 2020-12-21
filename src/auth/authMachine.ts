@@ -5,7 +5,7 @@ import type {
   AuthEvent, 
   AuthState,
 } from './types'
-import { assertEventType, emailReg, passwordReg, userMapper } from './utils';
+import { assertEventType, emailReg, passwordReg } from './utils';
 
 export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
   id: 'authentication',
@@ -30,11 +30,7 @@ export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
       invoke: {
         id: 'loader',
         src: 'loader',
-        onDone: { target: 'loggedIn', actions: assign({
-          user: (context, event) => {
-            return event.data;
-          }
-        }) },
+        onDone: { target: 'loggedIn', actions: 'setUser' },
         onError: {
           target: 'loggedOut.authFailed',
           actions: ['setError', 'clearAuth']
@@ -70,18 +66,13 @@ export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
         onDone: {
           target: 'authenticating',
           // clear error if successful login
-          actions: assign({ error: (context, event) => undefined })
+          actions: 'clearError'
         },
         onError: {
           // transition to authFailed state
           // and set an error
           target: 'loggedOut.authFailed',
-          actions: assign({
-            error: (context, event) => {
-              assertEventType(event, "ERROR");
-              return event.data
-            }
-          })
+          actions: 'setError'
         }
       }
     },
@@ -92,18 +83,13 @@ export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
         onDone: {
           target: 'authenticating',
           // clear error if successful login
-          actions: assign({ error: (context, event) => undefined })
+          actions: 'clearError'
         },
         onError: {
           // transition to authFailed state
           // and set an error
           target: 'loggedOut.authFailed',
-          actions: assign({
-            error: (context, event) => {
-              assertEventType(event, "ERROR");
-              return event.data
-            }
-          })
+          actions: 'setError'
         }
       }
     },
@@ -113,28 +99,11 @@ export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
         src: 'logout',
         onDone: {
           target: 'loggedOut',
-          actions: [
-            assign({
-              auth: (context, event) => undefined
-            }), 
-            assign({ error: (context, event) => undefined })
-          ]
+          actions: ['clearAuth', 'clearError']
         },
         onError: {
           target: 'loggedOut.authFailed',
-          actions: [
-            // clear auth
-            assign({
-              auth: (context, event) => undefined
-            }),
-            // set error 
-            assign({
-              error: (context, event) => {
-                // assertEventType(event, "ERROR");
-                return event.data
-              }
-            })
-          ]
+          actions: ['clearAuth', 'setError']
         }
       }
     }
@@ -153,7 +122,7 @@ export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
     }),
     setUser: assign({
       user: (context, event) => {
-        assertEventType(event, "LOGIN");
+        assertEventType(event, "done.invoke.loader");
         return event.data;
       }
     }),
@@ -178,33 +147,33 @@ export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
     // ...services,
     authChecker: () =>
       new Promise((resolve, reject) => {
-        const unsubscribe = auth.onIdTokenChanged(auth => {
+        const unsubscribe = auth.onIdTokenChanged(user => {
           unsubscribe();
-          return auth ? resolve(auth) : reject();
+          return user ? resolve(user) : reject();
         });
       }),
     authenticator: (context, event) => {
       assertEventType(event, "LOGIN");
       if (event.provider === 'email') {
-				return loginWithEmailPassword(event.email!, event.password!);
+        return loginWithEmailPassword(event.email!, event.password!)
 			} else if (event.provider === 'google') {
-				return loginWithGoogle();
+        return loginWithGoogle()
       } else {
         return Promise.reject('Firebase Auth Provider Error')
       }
     },
     createUser: (context, event) => {
       assertEventType(event, "REGISTER");
-			return createUserWithEmailAndPassword(event.email!, event.password!);
+			return createUserWithEmailAndPassword(event.email, event.password).then(() => {
+        let user = auth.currentUser
+        user?.updateProfile({
+          displayName: `${event.firstName} ${event.lastName}`
+        })
+      });
     },
     loader: async (context, event) => {
-      return new Promise(resolve => {
-        // auth object is already set on the app context
-        // by authChecker service
-        context.auth?.getIdTokenResult()
-          .then(({ claims }) => claims)
-          .then(resolve);
-      });
+      const token = await context.auth?.getIdTokenResult(true)
+      return token?.claims
     },
     logout: () => auth.signOut()
   }

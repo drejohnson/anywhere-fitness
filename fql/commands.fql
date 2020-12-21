@@ -1,3 +1,13 @@
-Call(Function("register"), ["newnew@test.com", "password1234"])
-Call(Function("login"), ["normal@test.com", "testtest"])
-Get(Ref(Collection("accounts_verification_request"), "283220058946142728"))
+Paginate(Tokens())
+Delete(Ref(Tokens(), "285227961825624582"))
+KeyFromSecret("fnED9cYFtUACBgPv-ON_IAYNKL_176YKJZkNXvzzt8DY4ZyewM4")
+Let(
+  {
+    tokenRef: Select(["ref"], KeyFromSecret("fnED9SZZOKACAAPv-ON_IAYNwR-wxnicEn1NWCaegTKldz8zA_0")),
+    tokenID: Select(["id"], Var("tokenRef"))
+  },
+  Delete(Ref(Tokens(), Var("tokenID")))
+)
+Call(Function("delete_token"),
+  "fnED9UeIxEACAgPv-ON_IAYNbtSyNb7ELeESFnzbyZsQ1Q0EyN8"
+)
