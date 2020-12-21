@@ -56,7 +56,7 @@ export type AuthEvent =
   | { type: 'error.invoke.createUser', data: string }
   | { type: "LOGOUT" }
   | { type: "LOGIN", provider: string, email: string, password: string, data: Partial<UserClaims> }
-  | { type: "REGISTER", email: string, password: string, data: Partial<UserClaims> }
+  | { type: "REGISTER", firstName: string, lastName: string, email: string, password: string, data: Partial<UserClaims> }
   | { type: "ERROR", data: string };
 
 export type AuthState =

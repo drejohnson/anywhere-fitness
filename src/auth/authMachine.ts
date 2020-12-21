@@ -195,7 +195,12 @@ export const authMachine = createMachine<AuthContext, AuthEvent, AuthState>({
     },
     createUser: (context, event) => {
       assertEventType(event, "REGISTER");
-			return createUserWithEmailAndPassword(event.email!, event.password!);
+			return createUserWithEmailAndPassword(event.email, event.password).then(() => {
+        let user = auth.currentUser
+        user?.updateProfile({
+          displayName: `${event.firstName} ${event.lastName}`
+        })
+      });
     },
     loader: async (context, event) => {
       return new Promise(resolve => {
