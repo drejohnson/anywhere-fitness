@@ -43,16 +43,9 @@ export interface AuthContext {
   error?: string
 }
 
-// export type AuthEvent =
-//   | { type: "AUTHENTICATE", data: firebase.User }
-//   | { type: "LOGOUT" }
-//   | { type: "LOGIN", provider: string, email: string, password: string, data: UserMapped }
-//   | { type: "REGISTER", email: string, password: string, data: UserMapped }
-//   | { type: "ERROR", data: string };
-
-
 export type AuthEvent =
   | { type: 'done.invoke.authChecker', data: firebase.User }
+  | { type: 'done.invoke.loader', data: any }
   | { type: 'error.invoke.createUser', data: string }
   | { type: "LOGOUT" }
   | { type: "LOGIN", provider: string, email: string, password: string, data: Partial<UserClaims> }
