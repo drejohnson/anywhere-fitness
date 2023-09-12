@@ -34,8 +34,7 @@
       textHover="text-white"
       borderColor="border-black"
       bgHover="bg-black"
-      text={'Learn More'}
-      on:click={() => navigate('about')} />
+      text={'Learn More'} />
   </div>
 </LandingContent>
 

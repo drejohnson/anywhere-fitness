@@ -23,7 +23,6 @@
 
   <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
     <NavLink to="explore"><span class="navlink">Explore</span></NavLink>
-    <NavLink to="about"><span class="navlink">About</span></NavLink>
     <NavLink to={signedIn ? 'user/profile' : 'auth/client/login'}>
       <span
         class="font-display text-base ml-5 text-white hover:text-black border-2 border-solid border-white hover:bg-white rounded-full py-1 px-6">{signedIn ? 'Profile' : 'Sign in'}</span>
